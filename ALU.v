@@ -1,26 +1,13 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 12/04/2023 04:11:39 PM
-// Design Name: 
+// Create Date: 12/04/2023 04:11:39 PM 
 // Module Name: ALU
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Module Description :it takes 2 16 bit numbers and adds them 
 //////////////////////////////////////////////////////////////////////////////////
+module ALU (
+input [15:0] A, P,
+output reg [15:0] Result
+);
+assign Result = A + P; // addition
 
-
-module ALU(
-
-    );
 endmodule
