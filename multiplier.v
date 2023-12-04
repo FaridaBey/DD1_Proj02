@@ -19,8 +19,15 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module multiplier();
+module multiplier(
+    input  [7:0] multiplicand,
+    input  [7:0] multiplier,
+    input clk, reset,
+    input load, enable, product_sel,
+    output reg  [15:0] product,
+    output  sign,
+    output  zero_flag, b0 
+);
 
 
 
