@@ -20,14 +20,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module multiplier(
-    input  [7:0] multiplicand,
+    //input  [7:0] multiplicand,
     input  [7:0] multiplier,
-    input clk, reset,
-    input load, enable, product_sel,
-    output reg  [15:0] product,
-    output  sign,
-    output  zero_flag, b0 
+    //input clk, rst,
+    //input LA,LB, EA,EB,EP, Psel,
+    //output reg  [15:0] product,
+    //output  sign,
+    //output  zero_flag, b0 
+    output w
 );
+wire[7:0] Twosmultiplier;
+TwothComp TC(.og_num(multiplier),.twoth_num(Twosmultiplier));
+wire [7:0]TwosMux;
+assign TwosMux= multiplier[7]?Twosmultiplier :  multiplier;
+assign w =1'b1;
+reg [7:0]MultiplierReg;
+//Combinational logic? Or Separate Module? Clock, load, and enable need to be handled.
 
 
 
