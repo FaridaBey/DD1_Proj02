@@ -36,16 +36,18 @@ module multiplier(
     
   //  output w
 );
-//wire[7:0] Twosmultiplier;
-//TwothComp TC(.og_num(multiplier),.twoth_num(Twosmultiplier));
-//wire [7:0]TwosMux;
-//assign TwosMux= multiplier[7]?Twosmultiplier :  multiplier;
-//assign w =1'b1;
+wire[7:0] Twosmultiplier;
+TwothComp TC(.og_num(MC),.twoth_num(Twosmultiplier));
+wire [7:0]TwosMux;
+assign TwosMux= MC[7]?Twosmultiplier :  MC;
 //reg [7:0]MultiplierReg;
 //Combinational logic? Or Separate Module? Clock, load, and enable need to be handled.
 reg [15:0]Shift_Left;
 reg [7:0]Shift_Right;
-
+wire[7:0] Twosmultiplier2;
+TwothComp TC2(.og_num(MP),.twoth_num(Twosmultiplier2));
+wire [7:0]TwosMux2;
+assign TwosMux2= MP[7]?Twosmultiplier2 :  MP;
 
 // ALU add(.A(Shift_Left ),.P(product ),.Result(product ));
 
@@ -60,8 +62,8 @@ always @(posedge clk ) begin
 
 if(load)
 begin
-Shift_Right<=MC;
-Shift_Left<=  {8'd0,MP};
+Shift_Right<=TwosMux;
+Shift_Left<=  {8'd0,TwosMux2};
 end
 else if(enable)
 begin
@@ -76,7 +78,16 @@ end
 
 assign zero_flag=!Shift_Right;    
 assign b0=Shift_Right[0];
-
-
+wire[16:0] TwosProduct;
+TwothComp16bit TC3(.og_num(product),.twoth_num(TwosProduct));
+wire [16:0]TwosMux3;
+assign TwosMux3= MP[7]^MC[7]?TwosProduct :  product;
+wire [19:0]BCDOut;
+bin_to_BCD BCD(.bin(TwosMux3), .bcd_output(BCDOut));
+wire[3:0] BBCD1=BCDOut[3:0];
+wire[3:0] BBCD2=BCDOut[7:4];
+wire[3:0] BBCD3=BCDOut[11:8];
+wire[3:0] BBCD4=BCDOut[15:12];
+wire[3:0] BBCD5=BCDOut[19:16];
 
 endmodule

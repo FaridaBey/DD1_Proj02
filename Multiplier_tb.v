@@ -41,7 +41,7 @@ wire [15:0] product;
  end 
  initial begin 
  rst=1;
- MP = 8'b00000011;
+ MP = 8'b10000011;
  MC = 8'b00000011;
  load=1'b1;
  enable = 1'b1;
