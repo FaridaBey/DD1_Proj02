@@ -20,13 +20,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module bin_to_BCD#(parameter x=16)(input[15:0] bin, output[19:0] bcd_output);
+module bin_to_BCD(#parameter x=16)(input bin, output bcd_output);
 
 
   integer i,j;
+
+  input wire [15:0] bin;
+  output wire [19:0] bcd_output;
   reg [20:0] BCD;
 
-  always @(bin) begin
+  always @(binary) begin
       BCD = 21'b0;
       BCD[x-1:0] = bin;
       for(i = 0; i <= 12; i = i+1)
