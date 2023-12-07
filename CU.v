@@ -31,10 +31,11 @@ input BTNC,z_flag, b0, output reg done, rst, load, enable, Psel);
    end
    else begin
    rst<=1'b0;
+   load <= 1'b0;
    end
    if(z_flag)begin
    done <=  1'b1;
-   enable<=0;
+   enable<=1'b0;
    //enable bcd??
    end
   if(b0)begin

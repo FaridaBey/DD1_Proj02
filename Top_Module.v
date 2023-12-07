@@ -25,9 +25,10 @@ wire sign, zero_flag,b0, done;
 wire [15:0]product;
 wire Psel,load,CUenable, CUrst;
 wire BTNCD, BTNLD, BTNRD;
-Push_Button_Detector PD1(.x(BTNC),.clk(clk),.reset(PDreset),.z(BTNCD));
-Push_Button_Detector PD2(.x(BTNR),.clk(clk),.reset(PDreset),.z(BTNLD));
-Push_Button_Detector PD3(.x(BTNL),.clk(clk),.reset(PDreset),.z(BTNRD));
+wire pdr=1'b0;
+pushbutton_detect PD1( .clk(clk), .rst(BTNC), .in(BTNC),  .out(BTNCD));
+pushbutton_detect PD2( .clk(clk), .rst(BTNC), .in(BTNR),  .out(BTNRD));
+pushbutton_detect PD3( .clk(clk), .rst(BTNC), .in(BTNL),  .out(BTNLD));
 //RESET IS FROM BTNC?
 wire sel1, sel2;
 multiplier MT(.MP(MP),.MC(MC),.clk(clk),.rst(CUrst),.enable(CUenable),.Psel(Psel),.load(load),.sign(sign),.zero_flag(zero_flag),.b0(b0),.product(product));
@@ -50,9 +51,10 @@ case(count)
 default:begin BCDMUX1=BBCD1; BCDMUX2 =BBCD2; BCDMUX3 =BBCD3; end
 endcase
 end
+clk_divider #(500_000) new_clk(.clk(clk),.rst(rst),.clk_out(clk_out));
 wire[1:0] dissell;
- bin_counter #(2, 4) BC(. clk(clk), .reset(CUrst),. enable(done),.count(dissell));
- reg BCDMUX4;
+ bin_counter #(2, 4) BC(. clk(clk_out), .reset(CUrst),. enable(done),.count(dissell));
+ reg [3:0]BCDMUX4;
  always @(dissell) begin
 case(dissell)
 0: BCDMUX4 =BCDMUX1;
