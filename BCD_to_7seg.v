@@ -18,9 +18,9 @@ always @ (*) begin
     0: anode_active = 4'b1110;
     1: anode_active = 4'b1101;
     2: anode_active = 4'b1011;
-    3: if(sign) anode_active = 4'b1111;
+    3: if(sign) anode_active = 4'b0111;
     else
-    anode_active = 4'b0111;
+    anode_active = 4'b1111;
     endcase
     end 
     else begin
@@ -45,8 +45,8 @@ end
 else
 begin
 case (sign)
-10: segments =7'b1111111; //pos
-11: segments =7'b1111110; // neg 
+0: segments =7'b1111111; //pos
+1: segments =7'b1111110; // neg 
 endcase
 end
 end
