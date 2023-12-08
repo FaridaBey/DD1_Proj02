@@ -40,6 +40,7 @@ begin
 7: segments =7'b0001111;
 8: segments =7'b0000000;
 9: segments =7'b0000100;
+default: segments = 7'd0;
 endcase
 end
 else
@@ -47,6 +48,7 @@ begin
 case (sign)
 0: segments =7'b1111111; //pos
 1: segments =7'b1111110; // neg 
+default: segments = 7'd0;
 endcase
 end
 end

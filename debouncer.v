@@ -23,7 +23,7 @@
 module debouncer(input clk, rst, in, output out);
 reg q1,q2,q3;
 always@(posedge clk, posedge rst) begin
- if(rst == 1'b1) begin
+ if(rst) begin
  q1 <= 0;
  q2 <= 0;
  q3 <= 0;

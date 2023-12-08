@@ -17,11 +17,11 @@
 // Revision 0.01 - File Created
 // Additional Comments:
 // 
-/////////////////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////////////
 module clk_divider #(parameter n = 50_000_000)
 (input clk, rst, output reg clk_out);
 wire [31:0] count;
+initial begin clk_out =0; end
 bin_counter #(32,n) C1(.clk(clk), .reset(rst), .enable(1'b1),.count(count));
 // Handle the output clock
 always @ (posedge clk, posedge rst) begin
@@ -31,3 +31,4 @@ else if (count == n-1)
 clk_out <= ~ clk_out;
 end
 endmodule
+ 

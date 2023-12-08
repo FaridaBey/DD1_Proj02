@@ -22,7 +22,7 @@
 
 module bin_counter #(parameter x = 3, parameter n=8)
 (input clk, reset, enable, output reg [x-1:0]count);
-
+initial begin count = 0; end
 always @(posedge clk, posedge reset) begin
  if (reset) begin
     count <= 0; 

@@ -23,7 +23,7 @@
 module rising_egde_detect(input clk, rst, x, output z );
 reg [1:0] state;
 reg [1:0] next_state;
-parameter [1:0] A=2'b00,B=2'b01,C=2'b10;
+localparam  [1:0] A=2'b00,B=2'b01,C=2'b10;
 always @ (*) begin
 case (state)
 A:if(x==0) 
@@ -38,15 +38,16 @@ C:if(x==0)
 next_state = A;
 else 
 next_state = C;
+default: next_state = A;
 endcase
 end 
-always @(posedge clk) begin 
+always @(posedge clk or posedge rst) begin 
 if(rst)
 state <= A;
 else 
 state <=next_state ;
 end
-assign z =(rst!=1 && state == B);
+assign z = (state == B);
 
 endmodule
 

@@ -22,7 +22,7 @@
 
 module updown_counter#(parameter x = 2, parameter n = 3) 
 (input clk, reset, enable, UpDown, output reg [x - 1:0] count);
-
+initial begin count <=0; end 
 always @(posedge clk or posedge reset) begin
 if (reset) begin
 count <= 0; 
