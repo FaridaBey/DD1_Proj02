@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module updown_counter#(parameter x = 2, parameter n = 3) 
+module updown_counter#(parameter x = 2, parameter n = 3)
 (input clk, reset, enable, UpDown, output reg [x - 1:0] count);
 initial begin count <=0; end 
 always @(posedge clk or posedge reset) begin
@@ -28,23 +28,23 @@ if (reset) begin
 count <= 0; 
 end 
 else if (enable) begin
-if (UpDown == 0) begin
-if (count == n - 1) begin
-count <= 0;
-end
-else begin
-count <= count + 1;
-end 
-end
- 
-else begin
-if (count == 0) begin
-count <= n - 1;
-end 
-else begin
-count <= count - 1;
-end 
-end
+
+    if (UpDown == 0) begin
+        if (count == n - 1) begin
+        count <= 0;
+        end
+        else begin
+        count <= count + 1;
+        end 
+    end
+    else begin
+        if (count == 0) begin
+        count <= n - 1;
+        end 
+        else begin
+        count <= count - 1;
+        end 
+    end
 end
 end
 endmodule

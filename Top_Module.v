@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-module Top_module(input clk, input BTNC, input BTNL, input BTNR, input [7:0] MP,input [7:0] MC, output  done, output [6:0] segments, output [3:0]anode_active );
+module Top_module(input clk, input BTNC, input BTNL, input BTNR, input [7:0] MP,input [7:0] MC, output  done, output [6:0] segments, output [3:0]anode_active);
 wire bright;
 wire bleft;
 wire bcenter;
@@ -35,8 +35,11 @@ wire sign;
 
 multiplier multiply ( .MP(MP) ,.MC(MC),.clk(clk),.load(load_int), .sign(sign), .zero_flag(zflag), .done(done), .product(product)); // sign tbu 7seg 
 
+
 wire s1;
 wire s2;
+assign select1 = s1;
+assign select2 = s2;
 
 CU control( .clk(clk), .BTNL(bleft),  .BTNR(bright),  .BTNC(bcenter), .sel_1(s1), .sel_2(s2), .load(load_int)); // sle_1/2 tbu mux after bcd
 //CU control( .clk(clk), .BTNL(BTNL),  .BTNR(BTNR),  .BTNC(BTNC), .sel_1(s1), .sel_2(s2), .load(load_int)); // sle_1/2 tbu mux after bcd
@@ -48,8 +51,9 @@ bin_to_BCD BCD (.bin(product), .bcd_output(BCD_product));
 reg [3:0] digit_1;
 reg [3:0] digit_2;
 reg [3:0] digit_3;
+
 always @ (*) begin
-case ({s2,s1})
+case ({s1,s2})
 0: begin  
 digit_1 = BCD_product [3:0];
 digit_2 = BCD_product [7:4];
@@ -88,17 +92,24 @@ bin_counter #( 2, 3) count_dis (.clk(clk_out), .reset(const_zero), .enable(const
 //bin_counter #( 2, 3) count_dis (.clk(clk), .reset(const_zero), .enable(const_one), .count(dis_sel));
 reg [3:0] num;
 always @ (*) begin
-case (dis_sel)
+case (count)
 0: num = digit_1 ;
 1: num = digit_2;
 2: num = digit_3;
+//3:begin
+//if (product == 0) num <=4'b1101;
+//    else num <= sign ? 4'b1110:4'b1101;
+//    end
 default: num = 4'b0;
 endcase
 end
+
+
+
 wire [1:0]count;
 bin_counter #( 2, 4) counter (.clk(clk_out), .reset(const_zero), .enable(const_one), .count(count));
 //bin_counter #( 2, 4) counter (.clk(clk), .reset(const_zero), .enable(const_one), .count(count));
-BCD_to_7seg segment(.en(const_one), .count(count), .num(num), .sign(sign), .segments(segments),.anode_active(anode_active)); 
+BCD_to_7seg segment(.en(done), .count(count), .num(num), .sign(sign), .segments(segments),.anode_active(anode_active)); 
 
 
 endmodule 

@@ -27,11 +27,13 @@ assign MC_middle = (MC[7] == 1'b1)? ~MC+1:MC;
 
 reg [15:0]Shift_Left;
 reg [7:0]Shift_Right;
+reg done_flag;
 initial 
 begin
 Shift_Left =16'b0;
 Shift_Right =8'b1;
 product=16'b0;
+done_flag = 0;
 end
 
 always @(posedge clk ) begin
@@ -39,6 +41,8 @@ if(load)
 begin
 Shift_Left <={8'd0,MC_middle};
 Shift_Right<=MP_middle;
+product=0;
+done_flag  = 1;
 end
 
 else if(~zero_flag)
@@ -56,7 +60,7 @@ end
 end
 assign zero_flag=!Shift_Right;   
 assign b0=Shift_Right[0];
-assign sign = MC[7]^MP[7];
-assign done = zero_flag ;
+assign sign = (MC[7]^MP[7])&& product;
+assign done = zero_flag && done_flag ;
 
 endmodule
